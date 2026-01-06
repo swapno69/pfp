@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swapno</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.5s ease, color 0.5s ease;
+            overflow: hidden;
+        }
+
+        body.dark {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #f0f0f0;
+        }
+
+        /* Intro Overlay */
+        .intro-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 100;
+            animation: fadeOut 0.8s ease forwards 3s;
+        }
+
+        .intro-name {
+            font-size: 80px;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: slideUp 1.2s ease forwards 0.5s;
+        }
+
+        .intro-welcome {
+            font-size: 36px;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s ease forwards 1.2s;
+        }
+
+        .intro-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: white;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: scaleIn 1s ease forwards 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 100px;
+            color: #764ba2;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transition: background 0.5s ease;
+            opacity: 0;
+            animation: fadeInContainer 1s ease forwards 3.5s;
+        }
+
+        body.dark .container {
+            background: rgba(30, 30, 50, 0.95);
+        }
+
+        @keyframes fadeInContainer {
+            to { opacity: 1; }
+        }
+
+        /* Profile Area with Skull and Animation */
+        .profile-area {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .profile-placeholder {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 100px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .profile-placeholder:hover {
+            transform: scale(1.08);
+        }
+
+        /* Scary Skull Character */
+        .cartoon-character {
+            position: absolute;
+            bottom: -10px;
+            right: -70px;
+            font-size: 70px;
+            opacity: 0;
+            transform: translateX(50px);
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        .wave-hand {
+            display: inline-block;
+            animation: wave 1s infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            15% { transform: rotate(14deg); }
+            30% { transform: rotate(-8deg); }
+            45% { transform: rotate(14deg); }
+            60% { transform: rotate(-4deg); }
+            75% { transform: rotate(10deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .show-character .cartoon-character {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            transition: color 0.5s ease;
+        }
+
+        body.dark h1 {
+            color: #e0e0ff;
+        }
+
+        .welcome {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 35px;
+            font-weight: 400;
+            transition: color 0.5s ease;
+        }
+
+        body.dark .welcome {
+            color: #bbbbff;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #888;
+            transition: color 0.5s ease;
+        }
+
+        body.dark footer {
+            color: #aaa;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.1;
+            z-index: -1;
+            animation: gradientShift 15s ease infinite;
+            transition: opacity 0.5s ease;
+        }
+
+        body.dark::before {
+            opacity: 0.3;
+        }
+
+        @keyframes gradientShift {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(10%) translateY(10%); }
+            100% { transform: translateX(0) translateY(0); }
+        }
+
+        /* Left Menu Button */
+        .left-menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        body.dark .left-menu-btn {
+            background: rgba(50,50,70,0.8);
+        }
+
+        .left-menu-btn span {
+            width: 20px;
+            height: 2px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        body.dark .left-menu-btn span {
+            background: #fff;
+        }
+
+        /* Left Dropdown Menu */
+        .left-menu-dropdown {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            width: 280px;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            z-index: 9;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .left-menu-dropdown {
+            background: #2c2c44;
+        }
+
+        .left-menu-dropdown > a {
+            padding: 14px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        body.dark .left-menu-dropdown > a {
+            color: #eee;
+        }
+
+        .left-menu-dropdown > a:hover {
+            background: #f0f0f0;
+        }
+
+        body.dark .left-menu-dropdown > a:hover {
+            background: #3a3a55;
+        }
+
+        .submenu {
+            display: none;
+            background: rgba(0,0,0,0.05);
+            padding: 8px 0;
+        }
+
+        body.dark .submenu {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .submenu div {
+            padding: 8px 20px 8px 40px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        body.dark .submenu div {
+            color: #bbb;
+        }
+
+        .submenu div a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        .left-menu-dropdown hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 0;
+        }
+
+        body.dark .left-menu-dropdown hr {
+            border-top: 1px solid #444;
+        }
+
+        .menu-active .left-menu-dropdown {
+            display: flex;
+        }
+
+        .submenu.active {
+            display: block;
+        }
+
+        /* Top Right Theme Toggle */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 24px;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        body.dark .theme-toggle-btn {
+            background: rgba(50,50,70,0.8);
+        }
+    </style>
+</head>
+<body>
+    <!-- Intro Animation Overlay -->
+    <div class="intro-overlay">
+        <div class="intro-circle">🫩</div>
+        <div class="intro-name">Swapno</div>
+        <div class="intro-welcome">Welcomes You</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContainer">
+        <!-- Left Menu Button -->
+        <div class="left-menu-btn" id="menuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Left Dropdown Menu -->
+        <div class="left-menu-dropdown" id="menuDropdown">
+            <a id="aboutToggle">ℹ️ About (Swapno)</a>
+            <div class="submenu" id="about-submenu">
+                <div><strong>Name:</strong> Swapno</div>
+                <div><strong>2nd Name:</strong> Aishwarjo</div>
+                <div><strong>Age:</strong> 16</div>
+                <div><strong>Occupation:</strong> Student</div>
+                <div><strong>Status:</strong> Single</div>
+            </div>
+            <hr>
+            <a id="contactsToggle">📞 Contacts</a>
+            <div class="submenu" id="contacts-submenu">
+                <div><strong>Phone:</strong> <a href="tel:01794695828">01794695828</a></div>
+                <div>
+                    <span class="icon">🌐</span>
+                    <strong>Facebook:</strong> 
+                    <a href="https://www.facebook.com/share/19r4F5LaW1/?mibextid=wwXIfr" target="_blank">
+                        <span class="icon">🔗</span> Open Profile
+                    </a>
+                </div>
+                <div>
+                    <span class="icon">📷</span>
+                    <strong>Instagram:</strong> 
+                    <a href="https://www.instagram.com/swapno_ghumacche?igsh=MWh4cHN2Z3BhbGIxZQ%3D%3D&utm_source=qr" target="_blank">
+                        <span class="icon">🔗</span> Open Profile
+                    </a>
+                </div>
+            </div>
+            <hr>
+            <a id="homeToggle">🏠 Home</a>
+            <div class="submenu" id="home-submenu">
+                <div><strong>MAP:</strong> <a href="https://maps.app.goo.gl/jbAyfQMFBpkDJVe79?g_st=ic" target="_blank">Open in Google Maps</a></div>
+            </div>
+            <hr>
+            <a id="favoritesToggle">⭐ Favorites</a>
+            <div class="submenu" id="favorites-submenu">
+                <div>💻 Computer</div>
+                <div>🤖 AI</div>
+                <div>👨‍💻 Coding</div>
+                <div>🎮 Games</div>
+            </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <div class="theme-toggle-btn" id="themeToggleBtn">
+            🌙
+        </div>
+
+        <!-- Profile Area with Skull and Waving Animation -->
+        <div class="profile-area" id="profileArea">
+            <div class="profile-placeholder" id="hiText">🫩</div>
+            <div class="cartoon-character" id="cartoon">
+                <span class="wave-hand">🫩</span>
+            </div>
+        </div>
+        
+        <h1>Swapno</h1>
+        <p class="welcome">Welcomes You</p>
+        
+        <footer>
+            © Created by <strong>Swapno</strong>
+        </footer>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const container = document.getElementById('mainContainer');
+        const aboutToggle = document.getElementById('aboutToggle');
+        const contactsToggle = document.getElementById('contactsToggle');
+        const homeToggle = document.getElementById('homeToggle');
+        const favoritesToggle = document.getElementById('favoritesToggle');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const profileArea = document.getElementById('profileArea');
+        const hiText = document.getElementById('hiText');
+
+        // Open/close left menu
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            container.classList.toggle('menu-active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!container.contains(e.target)) {
+                container.classList.remove('menu-active');
+            }
+        });
+
+        // About submenu
+        aboutToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('about-submenu').classList.toggle('active');
+        });
+
+        // Contacts submenu
+        contactsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('contacts-submenu').classList.toggle('active');
+        });
+
+        // Home submenu
+        homeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('home-submenu').classList.toggle('active');
+        });
+
+        // Favorites submenu
+        favoritesToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('favorites-submenu').classList.toggle('active');
+        });
+
+        // Theme toggle
+        themeToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.body.classList.toggle('dark');
+            if (document.body.classList.contains('dark')) {
+                themeToggleBtn.innerHTML = '☀️';
+            } else {
+                themeToggleBtn.innerHTML = '🌙';
+            }
+        });
+
+        // Click on Skull to show waving skull
+        hiText.addEventListener('click', () => {
+            profileArea.classList.add('show-character');
+            setTimeout(() => {
+                profileArea.classList.remove('show-character');
+            }, 2000);
+        });
+
+        // Touch support for mobile
+        hiText.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            profileArea.classList.add('show-character');
+            setTimeout(() => {
+                profileArea.classList.remove('show-character');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
